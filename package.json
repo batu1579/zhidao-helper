@@ -1,0 +1,35 @@
+{
+    "name": "hamibot-starter",
+    "version": "2.5.2",
+    "description": "一个用来快速开始编写 HamiBot 脚本的模板",
+    "main": "index.js",
+    "scripts": {
+        "build": "webpack --config ./buildConfig/webpack.dev.js"
+    },
+    "keywords": [
+        "hamibot",
+        "autojs"
+    ],
+    "author": "batu1579",
+    "license": "MPL-2.0",
+    "repository": "http://github.com/batu1579/hamibot-starter.git",
+    "devDependencies": {
+        "@babel/core": "^7.18.0",
+        "@babel/plugin-proposal-object-rest-spread": "^7.18.9",
+        "@babel/plugin-transform-runtime": "^7.18.10",
+        "@babel/preset-env": "^7.18.10",
+        "babel-loader": "^8.2.5",
+        "clean-webpack-plugin": "^4.0.0",
+        "core-js": "^3.22.6",
+        "ts-loader": "^9.3.0",
+        "typescript": "^4.6.4",
+        "webpack": "^5.72.1",
+        "webpack-cli": "^4.9.2",
+        "webpack-merge": "^5.8.0"
+    },
+    "dependencies": {
+        "@babel/preset-react": "^7.18.6",
+        "@babel/runtime": "^7.18.9",
+        "babel-preset-mobx": "^2.0.0"
+    }
+}
