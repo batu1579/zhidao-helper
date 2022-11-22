@@ -2,7 +2,7 @@
  * @Author: BATU1579
  * @CreateDate: 2022-02-04 20:58:39
  * @LastEditor: BATU1579
- * @LastTime: 2022-11-20 19:52:43
+ * @LastTime: 2022-11-22 16:16:53
  * @FilePath: \\src\\lib\\init.ts
  * @Description: 脚本初始化
  */
@@ -14,12 +14,11 @@ export function init() {
 
     Record.info(`Launching...\n\nCurrent script version: ${VERSION}\n`);
     events.on("exit", () => {
+        threads.shutDownAll();
         Record.info("Exit...");
 
         sleep(LONG_WAIT_MS * 5);
         console.hide();
-
-        threads.shutDownAll();
     });
 
     // check accessibility permission
