@@ -2,8 +2,8 @@
  * @Author: BATU1579
  * @CreateDate: 2022-05-30 18:17:34
  * @LastEditor: BATU1579
- * @LastTime: 2022-09-11 10:51:28
- * @FilePath: \\src\\types\\touch-operation.d.ts
+ * @LastTime: 2022-12-01 01:19:05
+ * @FilePath: \\hamibot-types\\types\\touch-operation.d.ts
  * @Description: 触摸操作模块
  */
 declare module 'touch-operation' {
@@ -31,7 +31,7 @@ declare module 'touch-operation' {
          * @param {number} x 要点击的横坐标。
          * @param {number} y 要点击的纵坐标。
          */
-        function click(x: number, y: number): void;
+        function click(x: number, y: number): boolean;
 
         /**
          * @description: 模拟长按坐标 (x, y) , 并返回是否成功。只有在长按执行完成（大约 600 毫秒）时脚本才会继续执行。一般而言，只有长按过程中被其他事件中断（例如用户自行点击）才会长按失败。
@@ -43,7 +43,7 @@ declare module 'touch-operation' {
          * @param {number} x 要按住的横坐标。
          * @param {number} y 要按住的纵坐标。
          */
-        function longClick(x: number, y: number): void;
+        function longClick(x: number, y: number): boolean;
 
         /**
          * @description: 模拟按住坐标 (x, y) , 并返回是否成功。只有按住操作执行完成时脚本才会继续执行。如果按住时间过短，那么会被系统认为是点击；如果时长超过 500 毫秒，则认为是长按。一般而言，只有按住过程中被其他事件中断才会操作失败。
@@ -64,7 +64,7 @@ declare module 'touch-operation' {
          * }
          * ```
          */
-        function press(x: number, y: number, duration: number): void;
+        function press(x: number, y: number, duration: number): boolean;
 
         /**
          * @description: 模拟从坐标 (x1, y1) 滑动到坐标 (x2, y2) ，并返回是否成功。只有滑动操作执行完成时脚本才会继续执行。一般而言，只有滑动过程中被其他事件中断才会滑动失败。
@@ -79,7 +79,7 @@ declare module 'touch-operation' {
          * @param {number} y2 滑动的起始纵坐标。
          * @param {number} duration 滑动时长，单位毫秒。
          */
-        function swipe(x1: number, y1: number, x2: number, y2: number, duration: number): void;
+        function swipe(x1: number, y1: number, x2: number, y2: number, duration: number): boolean;
 
         /**
          * @description: 模拟手势操作。

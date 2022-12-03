@@ -2,8 +2,8 @@
  * @Author: BATU1579
  * @CreateDate: 2022-05-31 13:19:44
  * @LastEditor: BATU1579
- * @LastTime: 2022-11-19 12:29:43
- * @FilePath: \\types\\widget-operation.d.ts
+ * @LastTime: 2022-11-30 21:49:18
+ * @FilePath: \\hamibot-types\\types\\widget-operation.d.ts
  * @Description: 控件操作
  */
 declare module 'widget-operation' {
@@ -396,6 +396,12 @@ declare module 'widget-operation' {
              * ```
              */
             idMatches(reg: RegExp | string): this;
+
+            /**
+             * @description: 为当前选择器附加在父控件中的顺序等于 `i` 的筛选条件。
+             * @return {this} 返回选择器自身以便链式调用。
+             */
+            indexInParent(i: number): this;
 
             /**
              * @description: 为当前选择器附加控件 `className` 等于字符串 `str` 的筛选条件。控件的 `className` （类名）表示一个控件的类别，例如文本控件的类名为 `android.widget.TextView` 。如果一个控件的类名以 `android.widget.` 开头，则可以省略这部分，例如文本控件可以直接用 `className('TextView')` 的选择器。
@@ -1473,28 +1479,28 @@ declare module 'widget-operation' {
         function algorithm(algorithm: 'DFS' | 'BFS'): UiSelector;
 
         /**
-         * @description: 为当前选择器附加控件 `text` 等于字符串 `str` 的筛选条件。控件的 `text` （文本）属性是文本控件上的显示的文字，例如微信左上角的'微信'文本。
+         * @description: 创建一个条件为控件 `text` 等于字符串 `str` 的选择器。控件的 `text` （文本）属性是文本控件上的显示的文字，例如微信左上角的'微信'文本。
          * @param {string} str 控件文本。
          * @return {UiSelector} 返回选择器自身以便链式调用。
          */
         function text(str: string): UiSelector;
 
         /**
-         * @description: 为当前选择器附加控件 `text` 需要包含字符串 `str` 的筛选条件。这是一个比较有用的条件，例如 QQ 动态页和微博发现页上方的'大家都在搜....'的控件可以用 `textContains('大家都在搜').findOne()` 来获取。
+         * @description: 创建一个条件为控件 `text` 需要包含字符串 `str` 的选择器。这是一个比较有用的条件，例如 QQ 动态页和微博发现页上方的'大家都在搜....'的控件可以用 `textContains('大家都在搜').findOne()` 来获取。
          * @param {string} str 要包含的字符串。
          * @return {UiSelector} 。
          */
         function textContains(str: string): UiSelector;
 
         /**
-         * @description: 为当前选择器附加控件 `text` 需要以 `prefix` 开头的筛选条件。这也是一个比较有用的条件，例如要找出 Hamibot 脚本列表中名称以'QQ'开头的脚本的代码为 `textStartsWith('QQ').find()` 。
+         * @description: 创建一个条件为控件 `text` 需要以 `prefix` 开头的选择器。这也是一个比较有用的条件，例如要找出 Hamibot 脚本列表中名称以'QQ'开头的脚本的代码为 `textStartsWith('QQ').find()` 。
          * @param {string} prefix 前缀字符串。
          * @return {UiSelector} 返回选择器自身以便链式调用。
          */
         function textStartsWith(prefix: string): UiSelector;
 
         /**
-         * @description: 为当前选择器附加控件 `text` 需要以 `suffix` 结束的筛选条件。
+         * @description: 创建一个条件为控件 `text` 需要以 `suffix` 结束的选择器。
          * @param {string} suffix 后缀字符串。
          * @return {UiSelector} 返回选择器自身以便链式调用。
          */
@@ -1514,28 +1520,28 @@ declare module 'widget-operation' {
         function textMatches(reg: RegExp | string): UiSelector;
 
         /**
-         * @description: 为当前选择器附加控件 `desc` 等于字符串 `str` 的筛选条件。控件的 `desc` （描述，全称为 `Content-Description` ）属性是对一个控件的描述，例如网易云音乐右上角的放大镜图标的描述为搜索。要查看一个控件的描述，同样地可以借助悬浮窗查看。
+         * @description: 创建一个条件为控件 `desc` 等于字符串 `str` 的选择器。控件的 `desc` （描述，全称为 `Content-Description` ）属性是对一个控件的描述，例如网易云音乐右上角的放大镜图标的描述为搜索。要查看一个控件的描述，同样地可以借助悬浮窗查看。
          * @param {string} str 控件描述文本。
          * @return {UiSelector} 返回选择器自身以便链式调用。
          */
         function desc(str: string): UiSelector;
 
         /**
-         * @description: 为当前选择器附加控件 `desc` 需要包含字符串 `str` 的筛选条件。
+         * @description: 创建一个条件为控件 `desc` 需要包含字符串 `str` 的选择器。
          * @param {string} str 控件描述要包含的文本。
          * @return {UiSelector} 返回选择器自身以便链式调用。
          */
         function descContains(str: string): UiSelector;
 
         /**
-         * @description: 为当前选择器附加控件 `desc` 需要以 `prefix` 开头的筛选条件。
+         * @description: 创建一个条件为控件 `desc` 需要以 `prefix` 开头的选择器。
          * @param {string} prefix 控件描述前缀。
          * @return {UiSelector} 返回选择器自身以便链式调用。
          */
         function descStartsWith(prefix: string): UiSelector;
 
         /**
-         * @description: 为当前选择器附加控件 `desc` 需要以 `suffix` 结束的筛选条件。
+         * @description: 创建一个条件为控件 `desc` 需要以 `suffix` 结束的选择器。
          * @param {string} suffix 控件描述后缀。
          * @return {UiSelector} 返回选择器自身以便链式调用。
          */
@@ -1561,7 +1567,7 @@ declare module 'widget-operation' {
         function depth(depth: number): UiSelector;
 
         /**
-         * @description: 为当前选择器附加 `id` 等于 `resId` 的筛选条件。控件的 `id` 属性 **通常** 是可以用来确定控件的唯一标识，如果一个控件有 `id` ，那么使用 `id` 来找到他是最好的方法。不过，在列表中会出现多个控件的 `id` 相同的情况。
+         * @description: 创建一个条件为 `id` 等于 `resId` 的选择器。控件的 `id` 属性 **通常** 是可以用来确定控件的唯一标识，如果一个控件有 `id` ，那么使用 `id` 来找到他是最好的方法。不过，在列表中会出现多个控件的 `id` 相同的情况。
          * 
          * **注意！：**
          * 
@@ -1573,21 +1579,21 @@ declare module 'widget-operation' {
         function id(resId: string): UiSelector;
 
         /**
-         * @description: 为当前选择器附加控件 `id` 包含字符串 `str` 的筛选条件。
+         * @description: 创建一个条件为控件 `id` 包含字符串 `str` 的选择器。
          * @param {string} str `id` 要包含的字符串。
          * @return {UiSelector} 返回选择器自身以便链式调用。
          */
         function idContains(str: string): UiSelector;
 
         /**
-         * @description: 为当前选择器附加 `id` 需要以 `prefix` 开头的筛选条件。
+         * @description: 创建一个条件为 `id` 需要以 `prefix` 开头的选择器。
          * @param {string} prefix 指定的 `id` 前缀。
          * @return {UiSelector} 返回选择器自身以便链式调用。
          */
         function idStartsWith(prefix: string): UiSelector;
 
         /**
-         * @description: 为当前选择器附加 `id` 需要以 `suffix` 结束的筛选条件。
+         * @description: 创建一个条件为 `id` 需要以 `suffix` 结束的选择器。
          * @param {string} suffix 指定的 `id` 后缀。
          * @return {UiSelector} 返回选择器自身以便链式调用。
          */
@@ -1611,35 +1617,41 @@ declare module 'widget-operation' {
         function idMatches(reg: RegExp | string): UiSelector;
 
         /**
-         * @description: 为当前选择器附加控件 `className` 等于字符串 `str` 的筛选条件。控件的 `className` （类名）表示一个控件的类别，例如文本控件的类名为 `android.widget.TextView` 。如果一个控件的类名以 `android.widget.` 开头，则可以省略这部分，例如文本控件可以直接用 `className('TextView')` 的选择器。
+         * @description: 创建一个条件为在父控件中的顺序等于 `i` 的选择器。
+         * @return {this} 返回选择器自身以便链式调用。
+         */
+        function indexInParent(i: number): UiSelector;
+
+        /**
+         * @description: 创建一个条件为控件 `className` 等于字符串 `str` 的选择器。控件的 `className` （类名）表示一个控件的类别，例如文本控件的类名为 `android.widget.TextView` 。如果一个控件的类名以 `android.widget.` 开头，则可以省略这部分，例如文本控件可以直接用 `className('TextView')` 的选择器。
          * @param {string} str 控件 `className` 属性。
          * @return {UiSelector} 返回选择器自身以便链式调用。
          */
         function className(str: CommonClassName): UiSelector;
 
         /**
-         * @description: 为当前选择器附加控件 `className` 等于字符串 `str` 的筛选条件。控件的 `className` （类名）表示一个控件的类别，例如文本控件的类名为 `android.widget.TextView` 。如果一个控件的类名以 `android.widget.` 开头，则可以省略这部分，例如文本控件可以直接用 `className('TextView')` 的选择器。
+         * @description: 创建一个条件为控件 `className` 等于字符串 `str` 的选择器。控件的 `className` （类名）表示一个控件的类别，例如文本控件的类名为 `android.widget.TextView` 。如果一个控件的类名以 `android.widget.` 开头，则可以省略这部分，例如文本控件可以直接用 `className('TextView')` 的选择器。
          * @param {string} str 控件 `className` 属性。
          * @return {UiSelector} 返回选择器自身以便链式调用。
          */
         function className(str: string): UiSelector;
 
         /**
-         * @description: 为当前选择器附加控件 `className` 需要包含字符串 `str` 的筛选条件。
+         * @description: 创建一个条件为控件 `className` 需要包含字符串 `str` 的选择器。
          * @param {string} str `className` 要包含的字符串。
          * @return {UiSelector} 返回选择器自身以便链式调用。
          */
         function classNameContent(str: string): UiSelector;
 
         /**
-         * @description: 为当前选择器附加控件 `className` 需要以 `prefix` 开头的筛选条件。
+         * @description: 创建一个条件为控件 `className` 需要以 `prefix` 开头的选择器。
          * @param {string} prefix 指定的 `className` 前缀。
          * @return {UiSelector} 返回选择器自身以便链式调用。
          */
         function classNameStartsWith(prefix: string): UiSelector;
 
         /**
-         * @description: 为当前选择器附加控件 `className` 需要以 `suffix` 结束的筛选条件。
+         * @description: 创建一个条件为控件 `className` 需要以 `suffix` 结束的选择器。
          * @param {string} suffix 指定的 `className` 后缀。
          * @return {UiSelector} 返回选择器自身以便链式调用。
          */
@@ -1659,35 +1671,35 @@ declare module 'widget-operation' {
         function classNameMatches(reg: RegExp | string): UiSelector;
 
         /**
-         * @description: 为当前选择器附加控件 `packageName` 等于字符串 `str` 的筛选条件。控件的 `packageName` 表示控件所属界面的应用包名。例如微信的包名为 `com.tencent.mm` , 那么微信界面中所有的控件的 `packageName` 都为 `com.tencent.mm` 。
+         * @description: 创建一个条件为控件 `packageName` 等于字符串 `str` 的选择器。控件的 `packageName` 表示控件所属界面的应用包名。例如微信的包名为 `com.tencent.mm` , 那么微信界面中所有的控件的 `packageName` 都为 `com.tencent.mm` 。
          * @param {string} str 指定的包名。
          * @return {UiSelector} 返回选择器自身以便链式调用。
          */
         function packageName(str: string): UiSelector;
 
         /**
-         * @description: 为当前选择器附加控件 `packageName` 需要包含字符串 `str` 的筛选条件。
+         * @description: 创建一个条件为控件 `packageName` 需要包含字符串 `str` 的选择器。
          * @param {string} str 控件 `packageName` 要包含的字符串。
          * @return {UiSelector} 返回选择器自身以便链式调用。
          */
         function packageNameContains(str: string): UiSelector;
 
         /**
-         * @description: 为当前选择器附加控件 `packageName` 需要以 `prefix` 开头的筛选条件。
+         * @description: 创建一个条件为控件 `packageName` 需要以 `prefix` 开头的选择器。
          * @param {string} prefix 指定控件 `packageName` 的前缀。
          * @return {UiSelector} 返回选择器自身以便链式调用。
          */
         function packageNameStartsWith(prefix: string): UiSelector;
 
         /**
-         * @description: 为当前选择器附加控件 `packageName` 需要以 `suffix` 结束的筛选条件。
+         * @description: 创建一个条件为控件 `packageName` 需要以 `suffix` 结束的选择器。
          * @param {string} suffix 指定控件 `packageName` 的后缀。
          * @return {UiSelector} 返回选择器自身以便链式调用。
          */
         function packageNameEndsWith(suffix: string): UiSelector;
 
         /**
-         * @description: 为当前选择器附加控件 `packageName` 需要满足正则表达式 `reg` 的条件。有关正则表达式，可以查看 [正则表达式] 。需要注意的是，如果正则表达式是字符串，则需要使用 `\\` 来表达 `\` （也即 Java 正则表达式的形式），例如 `textMatches('\\d+')` 匹配多位数字；但如果使用 JavaScript 语法的正则表达式则不需要，例如 `textMatches(/\d+/)` 。但如果使用字符串的正则表达式则该字符串不能同时以'/'开头和结束，也即不能写诸如 `textMatches('/\\d+/')` 的表达式，否则会被开头的'/'和结尾的'/'会被忽略。
+         * @description: 创建一个条件为控件 `packageName` 需要满足正则表达式 `reg` 的选择器。有关正则表达式，可以查看 [正则表达式] 。需要注意的是，如果正则表达式是字符串，则需要使用 `\\` 来表达 `\` （也即 Java 正则表达式的形式），例如 `textMatches('\\d+')` 匹配多位数字；但如果使用 JavaScript 语法的正则表达式则不需要，例如 `textMatches(/\d+/)` 。但如果使用字符串的正则表达式则该字符串不能同时以'/'开头和结束，也即不能写诸如 `textMatches('/\\d+/')` 的表达式，否则会被开头的'/'和结尾的'/'会被忽略。
          * 
          * **注意！：**
          * 
@@ -1715,7 +1727,7 @@ declare module 'widget-operation' {
         function bounds(left: number, top: number, right: number, bottom: number): UiSelector;
 
         /**
-         * @description: 为当前选择器附加控件 `bounds` 需要在 `left` , `top` , `right` , `buttom` 构成的范围里面的条件。这个条件用于限制选择器在某一个区域选择控件。
+         * @description: 创建一个条件为控件 `bounds` 需要在 `left` , `top` , `right` , `buttom` 构成的范围里面的选择器。这个条件用于限制选择器在某一个区域选择控件。
          * @param {number} left。
          * @param {number} top。
          * @param {number} right。
@@ -1733,7 +1745,7 @@ declare module 'widget-operation' {
         function boundsInside(left: number, top: number, right: number, bottom: number): UiSelector;
 
         /**
-         * @description: 为当前选择器附加控件 `bounds` 需要包含 `left` , `top` , `right` , `buttom` 构成的范围'的条件。这个条件用于限制控件的范围必须包含所给定的范围。
+         * @description: 创建一个条件为控件 `bounds` 需要包含 `left` , `top` , `right` , `buttom` 构成的范围'的选择器。这个条件用于限制控件的范围必须包含所给定的范围。
          * @param {number} left 范围左边缘与屏幕左边的距离。
          * @param {number} top 范围上边缘与屏幕上边的距离。
          * @param {number} right 范围右边缘与屏幕左边的距离。
@@ -1751,7 +1763,7 @@ declare module 'widget-operation' {
         function boundsContains(left: number, top: number, right: number, bottom: number): UiSelector;
 
         /**
-         * @description: 为当前选择器附加控件 `drawingOrder` 等于 `order` 的条件。 `drawingOrder` 为一个控件在父控件中的绘制顺序，通常可以用于区分同一层次的控件。
+         * @description: 创建一个条件为控件 `drawingOrder` 等于 `order` 的选择器。 `drawingOrder` 为一个控件在父控件中的绘制顺序，通常可以用于区分同一层次的控件。
          * 
          * **注意！：**
          * 
@@ -1763,7 +1775,7 @@ declare module 'widget-operation' {
         function drawingOrder(order: number): UiSelector;
 
         /**
-         * @description: 为当前选择器附加控件是否可点击的条件。但并非所有 `clickable` 为 `false` 的控件都真的不能点击，这取决于控件的实现。对于自定义控件（例如显示类名为 `android.view.View` 的控件）很多的 `clickable` 属性都为 `false` 都却能点击。
+         * @description: 创建一个条件为控件是否可点击的选择器。但并非所有 `clickable` 为 `false` 的控件都真的不能点击，这取决于控件的实现。对于自定义控件（例如显示类名为 `android.view.View` 的控件）很多的 `clickable` 属性都为 `false` 都却能点击。
          * @param {boolean} [b] 控件是否可点击（默认为 `true` ）。
          * @return {UiSelector} 返回选择器自身以便链式调用。
          * @example
@@ -1775,35 +1787,35 @@ declare module 'widget-operation' {
         function clickable(b?: boolean): UiSelector;
 
         /**
-         * @description: 为当前选择器附加控件是否可长按的条件。
+         * @description: 创建一个条件为控件是否可长按的选择器。
          * @param {boolean} [b] 控件是否可长按（默认为 `true` ）。
          * @return {UiSelector} 返回选择器自身以便链式调用。
          */
         function longClickable(b?: boolean): UiSelector;
 
         /**
-         * @description: 为当前选择器附加控件是否可勾选的条件。勾选通常是对于勾选框而言的，例如图片多选时左上角通常有一个勾选框。
+         * @description: 创建一个条件为控件是否可勾选的选择器。勾选通常是对于勾选框而言的，例如图片多选时左上角通常有一个勾选框。
          * @param {boolean} [b] 控件是否可勾选（默认为 `true` ）。
          * @return {UiSelector} 返回选择器自身以便链式调用。
          */
         function checkable(b?: boolean): UiSelector;
 
         /**
-         * @description: 为当前选择器附加控件是否已选中的条件。被选中指的是，例如 QQ 聊天界面点击下方的'表情按钮'时，会出现自己收藏的表情，这时'表情按钮'便处于选中状态，其 `selected` 属性为 `true` 。
+         * @description: 创建一个条件为控件是否已选中的选择器。被选中指的是，例如 QQ 聊天界面点击下方的'表情按钮'时，会出现自己收藏的表情，这时'表情按钮'便处于选中状态，其 `selected` 属性为 `true` 。
          * @param {boolean} [b] 控件是否被选（默认为 `true` ）。
          * @return {UiSelector} 返回选择器自身以便链式调用。
          */
         function selected(b?: boolean): UiSelector;
 
         /**
-         * @description: 为当前选择器附加控件是否已启用的条件。大多数控件都是启用的状态（ `enabled` 属性为 `true` ），处于“禁用”状态通常是灰色并且不可点击。
+         * @description: 创建一个条件为控件是否已启用的选择器。大多数控件都是启用的状态（ `enabled` 属性为 `true` ），处于“禁用”状态通常是灰色并且不可点击。
          * @param {boolean} [b] 控件是否已启用（默认为 `true` ）。
          * @return {UiSelector} 返回选择器自身以便链式调用。
          */
         function enabled(b?: boolean): UiSelector;
 
         /**
-         * @description: 为当前选择器附加控件是否可滑动的条件。滑动包括上下滑动和左右滑动。可以用这个条件来寻找可滑动控件来滑动界面。
+         * @description: 创建一个条件为控件是否可滑动的选择器。滑动包括上下滑动和左右滑动。可以用这个条件来寻找可滑动控件来滑动界面。
          * @param {boolean} [b] 控件是否可滑动（默认为 `true` ）。
          * @return {UiSelector} 返回选择器自身以便链式调用。
          * @example
@@ -1818,108 +1830,21 @@ declare module 'widget-operation' {
         function scrollable(b?: boolean): UiSelector;
 
         /**
-         * @description: 为当前选择器附加控件是否可编辑的条件。一般来说可编辑的控件为输入框（ `EditText` ），但不是所有的输入框（ `EditText` ）都可编辑。
+         * @description: 创建一个条件为控件是否可编辑的选择器。一般来说可编辑的控件为输入框（ `EditText` ），但不是所有的输入框（ `EditText` ）都可编辑。
          * @param {boolean} [b] 控件是否可编辑（默认为 `true` ）。
          * @return {UiSelector} 返回选择器自身以便链式调用。
          */
         function editable(b?: boolean): UiSelector;
 
         /**
-         * @description: 为当前选择器附加控件是否文本或输入框控件是否是多行显示的条件。
+         * @description: 创建一个条件为文本或输入框控件是否是多行显示的选择器。
          * @param {boolean} [b] 文本或输入框控件是否是多行显示的（默认为 `true` ）。
          * @return {UiSelector} 返回选择器自身以便链式调用。
          */
         function multiLine(b?: boolean): UiSelector;
 
         /**
-         * @description: 根据当前的选择器所确定的筛选条件，对屏幕上的控件进行搜索，直到屏幕上出现满足条件的一个控件为止，并返回该控件。如果找不到控件，当屏幕内容发生变化时会重新寻找，直至找到。
-         * 
-         * **注意！：**
-         * 
-         * - 如果屏幕上一直没有出现所描述的控件，则该函数会阻塞，直至所描述的控件出现为止。因此此函数不会返回 `null` 。如果想要只在屏幕上搜索一次而不是一直搜索，请使用 `findOnce()` 。
-         * - 如果屏幕上有多个满足条件的控件，`findOne()` 会返回根据指定的搜索算法（默认为 `DFS` ）找到的第一个控件。
-         * 
-         * @return {UiObject} 根据选择器查找到的控件。
-         */
-        function findOne(): UiObject;
-
-        /**
-         * @description: 根据当前的选择器所确定的筛选条件，对屏幕上的控件进行搜索，直到屏幕上出现满足条件的一个控件为止，并返回该控件；如果在 `timeout` 毫秒的时间内没有找到符合条件的控件，则终止搜索并返回 `null` 。
-         * @param {number} timeout 搜索的超时时间，单位毫秒。
-         * @return {UiObject | null} 根据选择器查找到的控件。
-         * @example
-         * ```typescript
-         * // 启动 Hamibot
-         * launchApp('Hamibot');
-         * // 在6秒内找出日志图标的控件
-         * let w = id('action_log').findOne(6000);
-         * // 如果找到控件则点击
-         * if (w != null) w.click();
-         * // 否则提示没有找到
-         * else toast('没有找到日志图标');
-         * ```
-         */
-        function findOne(timeout: number): UiObject | null;
-
-        /**
-         * @description: 根据当前的选择器所确定的筛选条件，对屏幕上的控件进行搜索，如果找到符合条件的控件则返回该控件；否则返回 `null` 。
-         * @return {UiObject | null} 根据选择器查找到的控件。
-         */
-        function findOnce(): UiObject | null;
-
-        /**
-         * @description: 根据当前的选择器所确定的筛选条件，对屏幕上的控件进行搜索，并返回第 `i + 1` 个符合条件的控件；如果没有找到符合条件的控件，或者符合条件的控件个数小于 `i` , 则返回 `null` 。
-         * @param {number} i 要查找的控件的索引值。
-         * @return {UiObject | null} 根据选择器查找到的控件。
-         */
-        function findOnce(i: number): UiObject | null;
-
-        /**
-         * @description: 根据当前的选择器所确定的筛选条件，对屏幕上的控件进行搜索，找到所有满足条件的控件集合并返回。这个搜索只进行一次，并不保证一定会找到，因而会出现返回的控件集合为空的情况。不同于 `findOne()` 或者 `findOnce()` 只找到一个控件并返回一个控件， `find()` 函数会找出所有满足条件的控件并返回一个控件集合。之后可以对控件集合进行操作。可以通过 `empty()` 函数判断找到的是否为空。
-         * @return {UiCollection} 根据选择器查找到的控件集合。
-         * @example
-         * ```typescript
-         * let c = className('AbsListView').find();
-         * if (c.empty()) toast('没找到╭(╯^╰)╮');
-         * else toast('找到啦!');
-         * ```
-         */
-        function find(): UiCollection;
-
-        /**
-         * @description: 根据当前的选择器所确定的筛选条件，对屏幕上的控件进行搜索，直到找到至少一个满足条件的控件为止，并返回所有满足条件的控件集合。该函数与 `find()` 函数的区别在于，该函数永远不会返回空集合；。
-         * 
-         * **注意！：**
-         * 
-         * - 如果屏幕上一直没有出现满足条件的控件，该函数会保持阻塞。
-         * 
-         * @return {UiCollection} 根据选择器查找到的控件集合。
-         */
-        function untilFind(): UiCollection;
-
-        /**
-         * @description: 判断屏幕上是否存在控件符合选择器所确定的条件。
-         * @return {boolean} 屏幕上是否存在选择器限定的控件。
-         * @example
-         * ```typescript
-         * // 如果有跳过按钮则点击
-         * if (text('跳过').exists()) text('跳过').findOne().click();
-         * ```
-         */
-        function exists(): boolean;
-
-        /**
-         * @description: 等待屏幕上出现符合条件的控件；在满足该条件的控件出现之前，该函数会一直保持阻塞。
-         * @example
-         * ```typescript
-         * // 等待包含'你好'的文本控件出现
-         * textContains('你好').waitFor();
-         * ```
-         */
-        function waitFor(): void;
-
-        /**
-         * @description: 为当前选择器附加自定义的过滤条件。
+         * @description: 创建自定义过滤条件的选择器。
          * @param {function} f 用于过滤的回调函数。参数为 UiObject ，返回值为 boolean （是否符合过滤条件）。
          * @return {UiSelector} 返回选择器自身以便链式调用。
          * @example
