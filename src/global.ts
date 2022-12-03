@@ -8,7 +8,9 @@
  */
 
 import { ConfigInvalidException } from "./lib/exception";
-import { setToken } from "./lib/logger";
+import { LogLevel, logStack, Record, sendLog, setToken } from "./lib/logger";
+
+export const PROJECT_NAME = "智慧树助手"
 
 /**
  * @description: 脚本版本号。建议根据 [语义化版本号] 迭代
@@ -23,18 +25,57 @@ export const LONG_WAIT_MS = 1000;
 
 export const EVENT = events.emitter();
 
-// ------------------------- configuration -------------------------
+Record.info(`Launching...\n\n\tCurrent script version: ${VERSION}\n`);
 
-export let {
-    TOKEN,
-    SHOW_CONSOLE,
+// ---------------------- configuration -------------------------
+
+const {
+    _TOKEN,
+    _SHOW_CONSOLE,
 } = hamibot.env;
 
-// ------------------------- validation --------------------------
+// -------------------- register listener -----------------------
+
+// register exit listener
+events.on("exit", () => {
+    threads.shutDownAll();
+    Record.info("Exit...");
+
+    sleep(LONG_WAIT_MS * 5);
+    console.hide();
+
+    // send to pushplus
+    let collection = logStack.filter((frame) => {
+        return frame.getLevel() >= LogLevel.Log;
+    });
+
+    if (_TOKEN && _TOKEN !== "") {
+        Record.info("Sending logs to pushplus...");
+
+        for (let i = 0; i < 3; i++) {
+            if (sendLog(collection, `[LOG] ${PROJECT_NAME}`)) {
+                Record.info("Sending logs succeeds");
+                return;
+            }
+            Record.warn(`Sending failed, retry ${i + 1}`);
+        }
+
+        Record.error("Failure to send logs !");
+    }
+});
+
+// ------------------------ validation --------------------------
+
+Record.info("Verifying configurations");
 
 // pushplus token
-if (typeof(TOKEN) === "string" && setToken(TOKEN) == false) {
-    throw new ConfigInvalidException(
-        "The 'Token' field in the configuration is invalid"
-    )
+if (_TOKEN && _TOKEN !== "" && setToken(_TOKEN) == false) {
+    throw new ConfigInvalidException("pushplus token", "needs to be a 32-bit hexadecimal number");
 }
+export const TOKEN = _TOKEN as string | undefined;
+
+// show console
+if (typeof _SHOW_CONSOLE !== "string" || _SHOW_CONSOLE !== "true" && _SHOW_CONSOLE !== "false") {
+    throw new ConfigInvalidException("show console");
+}
+export const SHOW_CONSOLE = _SHOW_CONSOLE as "true" | "false";
