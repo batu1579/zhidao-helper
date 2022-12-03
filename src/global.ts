@@ -2,7 +2,7 @@
  * @Author: BATU1579
  * @CreateDate: 2022-02-04 21:03:08
  * @LastEditor: BATU1579
- * @LastTime: 2022-12-04 03:46:13
+ * @LastTime: 2022-12-04 03:57:16
  * @FilePath: \\src\\global.ts
  * @Description: 全局常量和配置项验证
  */
@@ -15,7 +15,7 @@ export const PROJECT_NAME = "智慧树助手"
 /**
  * @description: 脚本版本号。建议根据 [语义化版本号] 迭代
  */
-export const VERSION = "1.0.0";
+export const VERSION = "1.1.0";
 
 export const LISTENER_INTERVAL = 100;
 
