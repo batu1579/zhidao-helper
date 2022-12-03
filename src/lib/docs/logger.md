@@ -265,8 +265,8 @@ Record.trace('Show me');
     {
         "name": "TOKEN",
         "type": "text",
-        "label": "sendplus的用户token",
-        "help": "可以在微信中查看复制，不使用sendplus则留空"
+        "label": "pushplus的用户token",
+        "help": "可以在微信中查看复制，不使用pushplus则留空"
     }
 ]
 ```

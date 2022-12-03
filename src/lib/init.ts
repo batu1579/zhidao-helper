@@ -2,25 +2,15 @@
  * @Author: BATU1579
  * @CreateDate: 2022-02-04 20:58:39
  * @LastEditor: BATU1579
- * @LastTime: 2022-11-22 16:16:53
+ * @LastTime: 2022-12-02 19:14:02
  * @FilePath: \\src\\lib\\init.ts
  * @Description: 脚本初始化
  */
 import { Record } from "./logger";
-import { PermissionException } from "./exception";
-import { VERSION, SHOW_CONSOLE, SHORT_WAIT_MS, LONG_WAIT_MS } from "../global";
+import { SHOW_CONSOLE, SHORT_WAIT_MS } from "../global";
+import { PermissionException, ServiceNotEnabled } from "./exception";
 
 export function init() {
-
-    Record.info(`Launching...\n\nCurrent script version: ${VERSION}\n`);
-    events.on("exit", () => {
-        threads.shutDownAll();
-        Record.info("Exit...");
-
-        sleep(LONG_WAIT_MS * 5);
-        console.hide();
-    });
-
     // check accessibility permission
     if (auto.service === null) {
         if (!confirm('Please enable accessibility permission')) {
@@ -33,20 +23,19 @@ export function init() {
 
     // check is service alive
     if (device.height === 0 || device.width === 0) {
-        Record.error(
+        throw new ServiceNotEnabled(
             'Failed to get the screen size. ' +
             'Please try restarting the service or re-installing Hamibot'
         );
-        exit();
     } else {
-        Record.verbose("Screen size: " + device.height + " x " + device.width);
+        Record.debug("Screen size: " + device.height + " x " + device.width);
     }
 
     // show console
-    if (SHOW_CONSOLE) {
+    if (SHOW_CONSOLE === "true") {
         console.show();
         sleep(SHORT_WAIT_MS);
-        console.setPosition(0, 100);
+        console.setPosition(0, 50);
         console.setSize(device.width, device.height / 4);
     }
 
