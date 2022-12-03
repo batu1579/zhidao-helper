@@ -33,6 +33,8 @@ const {
     _MODE,
     _TOKEN,
     _SHOW_CONSOLE,
+    _SWIPE_DIRECTION,
+    _UNLOCK_PWD,
 } = hamibot.env;
 
 // -------------------- register listener -----------------------
@@ -91,3 +93,24 @@ if (typeof _SHOW_CONSOLE !== "string" || _SHOW_CONSOLE !== "true" && _SHOW_CONSO
     throw new ConfigInvalidException("show console");
 }
 export const SHOW_CONSOLE = _SHOW_CONSOLE as "true" | "false";
+
+// swipe direction
+const directionOptions = [
+    "toLeft",
+    "toRight",
+    "toTop",
+    "toBottom"
+] as const;
+
+type Direction = typeof directionOptions[number];
+
+if (typeof _SWIPE_DIRECTION !== "string" || directionOptions.indexOf(_SWIPE_DIRECTION as Direction) === -1) {
+    throw new ConfigInvalidException("swipe direction");
+}
+export const SWIPE_DIRECTION = _SWIPE_DIRECTION as Direction;
+
+// unlock password
+if (typeof _UNLOCK_PWD !== "string" || !(/^\d+$/.test(_UNLOCK_PWD))) {
+    throw new ConfigInvalidException("unlock password", "currently, only digits password are supported");
+}
+export const UNLOCK_PWD = _UNLOCK_PWD as string | undefined;
