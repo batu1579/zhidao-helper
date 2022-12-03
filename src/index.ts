@@ -10,14 +10,21 @@ import {
     MODE,
     RunMode,
 } from "./global";
+
 import { init } from "./lib/init";
+import { Record } from "./lib/logger";
+import { unlock } from "./lib/unlock";
 
 init();
+
+Record.info("Start running script");
 
 Record.log(`running in ${MODE} mode`);
 
 if (MODE === RunMode.auto) {
     // auto mode
+    unlock();
+    Record.log("unlock device");
 } else if (MODE === RunMode.manual) {
     // manual mode
 }
