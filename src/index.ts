@@ -32,6 +32,9 @@ if (MODE === RunMode.auto) {
     changeSettings();
     device.keepScreenDim();
 
+    launchApplication();
+    Record.log("app launched");
+
     device.setBrightness(brightness);
     Record.log(`set brightness to ${brightness}`);
     device.setMusicVolume(musicVolume);
@@ -57,4 +60,17 @@ function changeSettings() {
             "Script have no permission to modify system Settings"
         );
     }
+}
+
+function launchApplication() {
+    let xiaomiLaunchDialogWatcher = setInterval(() => {
+        if (text("启动应用").exists()) {
+            text("允许").findOne().click();
+        }
+    }, LISTENER_INTERVAL);
+
+    launchApp("知到");
+
+    id("com.able.wisdomtree:id/bottom").waitFor();
+    clearInterval(xiaomiLaunchDialogWatcher);
 }
