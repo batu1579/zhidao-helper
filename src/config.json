@@ -10,6 +10,12 @@
         "help": "自动模式需要配合定时任务使用，请勿手动通过控制台启动。"
     },
     {
+        "name": "_STUDY_TIME_MIN",
+        "type": "text",
+        "label": "自动学习时长",
+        "help": "每节课要学习的时长（分钟），如果不为自动模式则忽略。"
+    },
+    {
         "name": "_SWIPE_DIRECTION",
         "type": "select",
         "label": "解锁时滑动方向",
@@ -27,6 +33,12 @@
         "type": "text",
         "label": "锁屏密码",
         "help": "目前只支持输入数字密码，无密码则留空"
+    },
+    {
+        "name": "_CLASS_NAME",
+        "type": "text",
+        "label": "要观看的课程名称（使用英文分号分隔）",
+        "help": "可以只填写部分名称，但是可能会导致找不到课程"
     },
     {
         "name": "_TOKEN",

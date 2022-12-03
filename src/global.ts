@@ -2,7 +2,7 @@
  * @Author: BATU1579
  * @CreateDate: 2022-02-04 21:03:08
  * @LastEditor: BATU1579
- * @LastTime: 2022-09-23 17:41:05
+ * @LastTime: 2022-12-04 03:12:46
  * @FilePath: \\src\\global.ts
  * @Description: 全局常量和配置项验证
  */
@@ -35,6 +35,8 @@ const {
     _SHOW_CONSOLE,
     _SWIPE_DIRECTION,
     _UNLOCK_PWD,
+    _CLASS_NAME,
+    _STUDY_TIME_MIN,
 } = hamibot.env;
 
 // -------------------- register listener -----------------------
@@ -114,3 +116,19 @@ if (typeof _UNLOCK_PWD !== "string" || !(/^\d+$/.test(_UNLOCK_PWD))) {
     throw new ConfigInvalidException("unlock password", "currently, only digits password are supported");
 }
 export const UNLOCK_PWD = _UNLOCK_PWD as string | undefined;
+
+// class name
+if (_CLASS_NAME === "") {
+    throw new ConfigInvalidException("Class name", "it can not be empty");
+}
+export const CLASS_NAME = _CLASS_NAME.split(';') as string[];
+
+for (let i = 0; i < CLASS_NAME.length; i++) {
+    CLASS_NAME[i] = CLASS_NAME[i].trim();
+}
+
+// study time
+if (MODE === RunMode.auto && !(/^\d+$/.test(_STUDY_TIME_MIN))) {
+    throw new ConfigInvalidException("study time", "must be only digits");
+}
+export const STUDY_TIME_MS = Number(_STUDY_TIME_MIN) * 60 * 1000;
