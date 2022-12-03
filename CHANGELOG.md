@@ -7,6 +7,8 @@
 
 ## [Unreleased]
 
+## [1.0.0] - 2022-12-04
+
 ### Added
 
 - 添加运行模式选择：
@@ -36,5 +38,6 @@
 
 <!-- Versions -->
 
-[unreleased]: https://github.com/batu1579/zhidao-helper/compare/v0.0.1...HEAD
+[unreleased]: https://github.com/batu1579/zhidao-helper/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/batu1579/zhidao-helper/compare/v0.0.1..v1.0.0
 [0.0.1]: https://github.com/batu1579/zhidao-helper/releases/tag/v0.0.1
