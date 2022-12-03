@@ -9,12 +9,19 @@
 import {
     MODE,
     RunMode,
+    CLASS_NAME,
+    STUDY_TIME_MS,
+    LISTENER_INTERVAL,
 } from "./global";
 
 import { init } from "./lib/init";
 import { Record } from "./lib/logger";
 import { unlock } from "./lib/unlock";
 import { PermissionException } from "./lib/exception";
+
+import {
+    autoWatchCourse
+} from "./lib/classOperation";
 
 init();
 
@@ -35,11 +42,18 @@ if (MODE === RunMode.auto) {
     launchApplication();
     Record.log("app launched");
 
+    for (let i = 0; i < CLASS_NAME.length; i++) {
+        const ELEMENT = CLASS_NAME[i];
+        autoWatchCourse(ELEMENT, STUDY_TIME_MS);
+    }
+
     device.setBrightness(brightness);
     Record.log(`set brightness to ${brightness}`);
     device.setMusicVolume(musicVolume);
     Record.log(`set music volume to ${musicVolume}`);
     device.cancelKeepingAwake();
+
+    Record.info("The scheduled task has been completed");
 } else if (MODE === RunMode.manual) {
     // manual mode
 }
