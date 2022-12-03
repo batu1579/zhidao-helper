@@ -1,6 +1,6 @@
 {
     "name": "zhidao-helper",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "description": "智慧树答题小助手",
     "main": "index.js",
     "scripts": {
