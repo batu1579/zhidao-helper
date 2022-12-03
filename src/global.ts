@@ -30,6 +30,7 @@ Record.info(`Launching...\n\n\tCurrent script version: ${VERSION}\n`);
 // ---------------------- configuration -------------------------
 
 const {
+    _MODE,
     _TOKEN,
     _SHOW_CONSOLE,
 } = hamibot.env;
@@ -67,6 +68,17 @@ events.on("exit", () => {
 // ------------------------ validation --------------------------
 
 Record.info("Verifying configurations");
+
+// script mode
+export enum RunMode {
+    auto = "auto",
+    manual = "manual"
+}
+
+if (_MODE !== RunMode.auto && _MODE !== RunMode.manual) {
+    throw new ConfigInvalidException("Invalid script mode", "needs to be 'auto' or 'manual'");
+}
+export const MODE = _MODE as RunMode;
 
 // pushplus token
 if (_TOKEN && _TOKEN !== "" && setToken(_TOKEN) == false) {

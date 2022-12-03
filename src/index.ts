@@ -6,7 +6,21 @@
  * @FilePath: \\src\\index.ts
  * @Description: 脚本入口
  */
-import {} from "./global";
+import {
+    MODE,
+    RunMode,
+} from "./global";
 import { init } from "./lib/init";
 
 init();
+
+Record.log(`running in ${MODE} mode`);
+
+if (MODE === RunMode.auto) {
+    // auto mode
+} else if (MODE === RunMode.manual) {
+    // manual mode
+}
+
+threads.shutDownAll();
+exit();
