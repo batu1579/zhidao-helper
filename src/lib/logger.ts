@@ -2,10 +2,13 @@
  * @Author: BATU1579
  * @CreateDate: 2022-02-05 04:00:16
  * @LastEditor: BATU1579
- * @LastTime: 2022-11-22 16:27:08
+ * @LastTime: 2022-12-01 03:18:00
  * @FilePath: \\src\\lib\\logger.ts
  * @Description: 存放关于日志和调试信息的预制方法。
  */
+
+const LOG_EVENT = events.emitter();
+
 class FrameCollection<FrameType> {
 
     protected frames: FrameType[];
@@ -59,6 +62,21 @@ class TraceCollection extends FrameCollection<TraceStackFrame> {
     }
 
     /**
+     * @description: 将调用堆栈集合逐个转换为字符串。
+     * @param {TraceFormatter} [format] 用于规定转换后的字符串格式的回调方法，默认转换格式的默认转换格式类似 Python 。
+     * @return {string[]} 将集合中元素转换为字符串后的数组。
+     */
+    public toStringArray(format?: TraceFormatter): string[] {
+        let trace: string[] = []
+
+        for (let frame of this.frames) {
+            trace.push(frame.toString(format));
+        }
+
+        return trace
+    }
+
+    /**
      * @description: 将调用堆栈集合转换为字符串。
      * @param {TraceFormatter} [format] 用于规定转换后的字符串格式的回调方法，默认转换格式的默认转换格式类似 Python 。
      * @return {string} 转换后的字符串。
@@ -76,12 +94,12 @@ class TraceCollection extends FrameCollection<TraceStackFrame> {
 
 class LogCollection extends FrameCollection<LogStackFrame> {
     /**
-     * @description: 从当前的集合当中过滤符合条件的栈帧。
+     * @description: 从当前的集合当中过滤符合条件的元素。
      * @param {Function} callbackFn 用来测试数组中每个元素的函数。返回 `true` 表示该元素通过测试，保留该元素， `false` 则不保留。它接受以下三个参数：
      * - `element` 数组中当前正在处理的元素。
      * - `index` 正在处理的元素在数组中的索引。
      * - `array` 调用了 `filter()` 的数组本身。
-     * @return {LogCollection} 过滤出的符合条件的栈帧组成的新栈帧集合。
+     * @return {LogCollection} 过滤出的符合条件的日志组成的新集合。
      */
     public filter(callbackFn: (frame: LogStackFrame, index: number, array: LogStackFrame[]) => boolean): LogCollection {
         let result = new LogCollection();
@@ -98,8 +116,8 @@ class LogCollection extends FrameCollection<LogStackFrame> {
     }
 
     /**
-     * @description: 将日志堆栈转换为 html 字符串用于发送日志。
-     * @return {string} 转换后的堆栈。
+     * @description: 将日志集合转换为 html 字符串用于发送日志。
+     * @return {string} 转换后的字符串。
      */
     public toHtmlString(): string {
         let stack: string[] = [
@@ -119,8 +137,22 @@ class LogCollection extends FrameCollection<LogStackFrame> {
     }
 
     /**
-     * @description: 获取日志堆栈的内容。
-     * @return {string} 将栈帧转换为字符串后的日志堆栈。
+     * @description: 将日志集合逐个转换为字符串。
+     * @return {string[]} 将集合中元素转换为字符串后的数组。
+     */
+    public toStringArray(): string[] {
+        let stack: string[] = [];
+
+        for (let i = 0; i < this.frames.length; i++) {
+            stack.push(this.frames[i].toString());
+        }
+
+        return stack;
+    }
+
+    /**
+     * @description: 将日志集合转换为字符串。
+     * @return {string} 将日志集合元素转换为字符串后使用换行符拼接的字符串。
      */
     public toString(): string {
         let stack: string[] = [];
@@ -240,7 +272,7 @@ class LogStackFrame {
                     '>': '&gt;',
                     '&': '&amp;',
                     '"': '&quot;',
-                    '\'': '&#39;',
+                    '\'': '&apos;',
                     '`': '&#96',
                     '\/': '&#x2F'
                 }[c]!;
@@ -316,7 +348,7 @@ export const logStack: LogCollection = new LogCollection();
 /**
  * @description: pushplus 的令牌。用于发送日志。
  */
-let TOKEN: string | null = null;
+let _token: string | null = null;
 
 /**
  * @description: 通过抛出异常，从调用堆栈中获取调用者的函数名。
@@ -378,6 +410,11 @@ export class Record {
      */
     private static DISPLAY_LEVEL: number = LogLevel.Debug;
 
+    /**
+     * @description: 用来限制发送到 hamibot 的日志等级，低于此级别日志不会被发送到 hamibot
+     */
+    private static HAMIBOT_LEVEL: number = LogLevel.Info;
+
     private constructor() { }
 
     /**
@@ -402,6 +439,14 @@ export class Record {
     }
 
     /**
+     * @description: 设置发送到 hamibot 的日志级别，低于设置的级别的日志都不会被发送。
+     * @param {number} level 设置的等级。建议使用 `LogLevel` 枚举类型来获取等级。
+     */
+    public setSendToHamibotLevel(level: number): void {
+        Record.HAMIBOT_LEVEL = level;
+    }
+
+    /**
      * @description: 将信息打印到控制台，并带上换行符。 可以一次性传入多个参数，第一个参数作为主要信息，其他参数作为类似于 [printf(3)](https://man7.org/linux/man-pages/man3/printf.3.html) 中的代替值（参数都会传给 `util.format()` ）。
      * 
      * 此函数与 `console.log` 方法的主要区别在于会自动存储每一次的日志，以供后面使用。
@@ -419,7 +464,7 @@ export class Record {
      * ```
      */
     public static log(message?: string, ...args: any[]): string {
-        return Record.recLog(LoggerSchemes.log, message, ...args);
+        return Record.recLog(LoggerSchemes.log, true, message, ...args);
     }
 
     /**
@@ -428,7 +473,7 @@ export class Record {
      * @param {array} [args] 要填充的数据。
      */
     public static verbose(message?: string, ...args: any[]): string {
-        return Record.recLog(LoggerSchemes.debug, message, ...args);
+        return Record.recLog(LoggerSchemes.debug, true, message, ...args);
     }
 
     /**
@@ -449,7 +494,7 @@ export class Record {
      * @param {array} [args] 要填充的数据。
      */
     public static info(message?: string, ...args: any[]): string {
-        return Record.recLog(LoggerSchemes.info, message, ...args);
+        return Record.recLog(LoggerSchemes.info, true, message, ...args);
     }
 
     /**
@@ -458,7 +503,7 @@ export class Record {
      * @param {array} [args] 要填充的数据。
      */
     public static warn(message?: string, ...args: any[]): string {
-        return Record.recLog(LoggerSchemes.warn, message, ...args);
+        return Record.recLog(LoggerSchemes.warn, true, message, ...args);
     }
 
     /**
@@ -467,7 +512,16 @@ export class Record {
      * @param {array} [args] 要填充的数据。
      */
     public static error(message?: string, ...args: any[]): string {
-        return Record.recLog(LoggerSchemes.error, message, ...args);
+        return Record.recLog(LoggerSchemes.error, true, message, ...args);
+    }
+
+    /**
+     * @description: 与 `Record.error` 类似，但不会输出结果到控制台。主要用于避免重复显示抛出的异常。
+     * @param {string} [message] 主要信息。
+     * @param {array} [args] 要填充的数据。
+     */
+    public static noPrintError(message?: string, ...args: any[]): string {
+        return Record.recLog(LoggerSchemes.error, false, message, ...args);
     }
 
     /**
@@ -493,7 +547,7 @@ export class Record {
         let trace = sliceStackFrames(getRawStackTrace(), 1, 0);
         let parsedTrace = new TraceCollection(...parseTrace(trace))
 
-        return Record.recLog(LoggerSchemes.trace, `${data}\n${parsedTrace.toString(format)}`, ...args);
+        return Record.recLog(LoggerSchemes.trace, true, `${data}\n${parsedTrace.toString(format)}`, ...args);
     }
 
     /**
@@ -503,10 +557,10 @@ export class Record {
      * @param {array} [args] 要填充的数据。
      * @return {string} 输出的日志信息。
      */
-    private static recLog(scheme: LoggerScheme, data?: string, ...args: any[]): string {
+    private static recLog(scheme: LoggerScheme, needPrint: boolean, data?: string, ...args: any[]): string {
         // @ts-ignore
         data = util.format(data, ...args);
-        data = `[${scheme.displayName}] [${getCallerName(3)}]: ${data}`;
+        data = `[${scheme.displayName}] [${getCallerName(1)}]: ${data}`;
 
         // 向日志堆栈中添加数据
         if (scheme.level >= Record.RECORD_LEVEL) {
@@ -514,8 +568,13 @@ export class Record {
         }
 
         // 输出日志
-        if (scheme.level >= Record.DISPLAY_LEVEL) {
+        if (needPrint && scheme.level >= Record.DISPLAY_LEVEL) {
             scheme.logFunction(data);
+        }
+
+        // 发送到 hamibot
+        if (scheme.level >= Record.HAMIBOT_LEVEL) {
+            hamibot.postMessage(data);
         }
 
         return data;
@@ -531,17 +590,11 @@ export class Record {
  * @return {boolean} 是否设置成功。
  */
 export function setToken(token: string): boolean {
-    let regResult = /([0-9a-f]*)/.exec(token);
-
-    if (token.length !== 32) {
-        return false;
-    } else if (regResult === null) {
-        return false;
-    } else if (regResult[1] !== token) {
+    if (token.length !== 32 || /^\d*$/.test(token)) {
         return false;
     }
 
-    TOKEN = token;
+    _token = token;
 
     return true;
 }
@@ -662,13 +715,13 @@ function parseTrace(originTrace: string): TraceStackFrame[] {
  */
 function sendToRemote(title: string, message: string): boolean {
     // TODO: 抛出异常？
-    if (TOKEN === null) {
+    if (_token === null) {
         return false;
     }
 
     let res = http.post(`http://www.pushplus.plus/send`, {
         title: title,
-        token: TOKEN,
+        token: _token,
         content: message,
         template: 'html'
     })
@@ -679,6 +732,10 @@ function sendToRemote(title: string, message: string): boolean {
 function defaultFormatter(line: number, callerName: string): string {
     return `  | at line ${line}, in <${callerName}>`;
 }
+
+export type LogCollectionType = LogCollection;
+
+export type LogStackFrameType = LogStackFrame;
 
 export type TraceCollectionType = TraceCollection;
 
