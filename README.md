@@ -11,7 +11,7 @@
   </a>
 </p>
 
-> 智慧树答题小助手
+> 智慧树小助手
 >
 > 使用 [hamibot-starter](https://github.com/batu1579/hamibot-starter) 快速创建。
 
@@ -27,9 +27,10 @@
 
 - Github: [@batu1579](https://github.com/batu1579)
 
+## 📋 更新日志
+
+查看 [更新日志](https://github.com/batu1579/zhidao-helper/blob/main/CHANGELOG.md)
+
 ## 支持
 
 如果有帮到你的话，帮我点颗小星星叭~ ⭐️
-
-***
-_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
