@@ -14,6 +14,7 @@ import {
 import { init } from "./lib/init";
 import { Record } from "./lib/logger";
 import { unlock } from "./lib/unlock";
+import { PermissionException } from "./lib/exception";
 
 init();
 
@@ -25,9 +26,35 @@ if (MODE === RunMode.auto) {
     // auto mode
     unlock();
     Record.log("unlock device");
+
+    let brightness = device.getBrightness();
+    let musicVolume = device.getMusicVolume();
+    changeSettings();
+    device.keepScreenDim();
+
+    device.setBrightness(brightness);
+    Record.log(`set brightness to ${brightness}`);
+    device.setMusicVolume(musicVolume);
+    Record.log(`set music volume to ${musicVolume}`);
+    device.cancelKeepingAwake();
 } else if (MODE === RunMode.manual) {
     // manual mode
 }
 
 threads.shutDownAll();
 exit();
+
+function changeSettings() {
+    try {
+        device.setMusicVolume(0);
+        Record.log("set music volume to 0");
+
+        device.setBrightnessMode(0);
+        device.setBrightness(0);
+        Record.log("set brightness to 0");
+    } catch (error) {
+        throw new PermissionException(
+            "Script have no permission to modify system Settings"
+        );
+    }
+}
