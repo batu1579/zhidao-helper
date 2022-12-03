@@ -1,5 +1,15 @@
 [
     {
+        "name": "_MODE",
+        "type": "select",
+        "label": "脚本的运行模式",
+        "options": {
+            "auto": "自动模式",
+            "manual": "手动模式"
+        },
+        "help": "自动模式需要配合定时任务使用，请勿手动通过控制台启动。"
+    },
+    {
         "name": "_TOKEN",
         "type": "text",
         "label": "pushplus 的用户 Token",
