@@ -7,6 +7,8 @@
 
 ## [Unreleased]
 
+## [1.1.0] - 2022-12-04
+
 ### Added
 
 - 添加学期末自动填写调查问卷的功能
@@ -47,6 +49,7 @@
 
 <!-- Versions -->
 
-[unreleased]: https://github.com/batu1579/zhidao-helper/compare/v1.0.0...HEAD
+[unreleased]: https://github.com/batu1579/zhidao-helper/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/batu1579/zhidao-helper/compare/v1.0.0..v1.1.0
 [1.0.0]: https://github.com/batu1579/zhidao-helper/compare/v0.0.1..v1.0.0
 [0.0.1]: https://github.com/batu1579/zhidao-helper/releases/tag/v0.0.1
