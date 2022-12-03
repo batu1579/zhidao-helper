@@ -27,6 +27,17 @@ init();
 
 Record.info("Start running script");
 
+threads.start(function () {
+    setInterval(() => {
+        if (textContains("今日已学习一段时间").exists()) {
+            Record.log("Detected course learning time dialog");
+            id("com.able.wisdomtree:id/iv_back")
+                .findOne()
+                .click();
+        }
+    }, LISTENER_INTERVAL);
+})
+
 Record.log(`running in ${MODE} mode`);
 
 if (MODE === RunMode.auto) {
