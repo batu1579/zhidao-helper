@@ -58,6 +58,12 @@ export function autoWatchCourse(courseName: string, studyTime: number): void {
 
     sleep(LONG_WAIT_MS * 3);
 
+    if (textContains("课程快结束了").exists()) {
+        Record.log("Detected course end dialog");
+        fillCourseQuestionnaire();
+        sleep(LONG_WAIT_MS * 3);
+    }
+
     // 开始学习
     Record.info(`start studying "${realClassName}" course`);
     startStudyByTime(studyTime);
@@ -66,6 +72,54 @@ export function autoWatchCourse(courseName: string, studyTime: number): void {
     back();
     text("确定").findOne().click();
     Record.info(`stop studying ${realClassName} course`);
+}
+
+function fillCourseQuestionnaire() {
+    // 开始填写
+    id("com.able.wisdomtree:id/accept_btn")
+        .findOne()
+        .click();
+
+    sleep(LONG_WAIT_MS * 3);
+
+    let questionList = getQuestionList();
+
+    Record.log(`Need answer ${questionList.length} questions`);
+
+    for (let i = 0; i < questionList.length; i++) {
+        Record.debug(`Answering question ${i}`);
+        let element = questionList[i];
+
+        if (element.childCount() > 2) {
+            Record.debug("Single choice question");
+            simulatedClick(element.child(1)!);
+        } else {
+            Record.debug("text question");
+            element.findOne(
+                className("EditText")
+            )?.setText("无");
+        }
+
+        swipe(
+            Math.round(device.width / 2), device.height - 100,
+            Math.round(device.width / 2), device.height - 100 - element.bounds().height(),
+            LONG_WAIT_MS
+        );
+
+        questionList = getQuestionList();
+        sleep(LONG_WAIT_MS);
+    }
+
+    text("提交").findOne().click();
+    Record.log("Done");
+}
+
+function getQuestionList(): UiCollection {
+    return className("android.view.View")
+        .indexInParent(2)
+        .depth(6)
+        .findOne()
+        .children();
 }
 
 /**
