@@ -2,7 +2,7 @@
  * @Author: BATU1579
  * @CreateDate: 2022-02-04 21:03:08
  * @LastEditor: BATU1579
- * @LastTime: 2022-12-04 03:57:16
+ * @LastTime: 2022-12-06 02:40:38
  * @FilePath: \\src\\global.ts
  * @Description: 全局常量和配置项验证
  */
@@ -148,7 +148,16 @@ for (let i = 0; i < CLASS_NAME.length; i++) {
 }
 
 // study time
-if (MODE === RunMode.auto && !(/^\d+$/.test(_STUDY_TIME_MIN))) {
+if (
+    typeof _STUDY_TIME_MIN !== "string" ||
+    !(/^\d+$/.test(_STUDY_TIME_MIN))
+) {
     throw new ConfigInvalidException("study time", "must be only digits");
+}
+if (MODE === RunMode.auto && Number(_STUDY_TIME_MIN) <= 0) {
+    throw new ConfigInvalidException(
+        "study time",
+        "When the running mode is set to \"auto\", study time must be greater than 0"
+    );
 }
 export const STUDY_TIME_MS = Number(_STUDY_TIME_MIN) * 60 * 1000;
