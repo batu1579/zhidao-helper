@@ -2,7 +2,7 @@
  * @Author: BATU1579
  * @CreateDate: 2022-02-05 04:00:16
  * @LastEditor: BATU1579
- * @LastTime: 2022-12-01 03:18:00
+ * @LastTime: 2022-12-05 23:40:33
  * @FilePath: \\src\\lib\\logger.ts
  * @Description: 存放关于日志和调试信息的预制方法。
  */
@@ -413,7 +413,7 @@ export class Record {
     /**
      * @description: 用来限制发送到 hamibot 的日志等级，低于此级别日志不会被发送到 hamibot
      */
-    private static HAMIBOT_LEVEL: number = LogLevel.Info;
+    private static HAMIBOT_LEVEL: number = LogLevel.Log;
 
     private constructor() { }
 
