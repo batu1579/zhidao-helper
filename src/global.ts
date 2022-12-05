@@ -108,19 +108,37 @@ const directionOptions = [
 
 type Direction = typeof directionOptions[number];
 
-if (typeof _SWIPE_DIRECTION !== "string" || directionOptions.indexOf(_SWIPE_DIRECTION as Direction) === -1) {
+if (
+    MODE === RunMode.auto &&
+    (
+        typeof _SWIPE_DIRECTION !== "string" ||
+        directionOptions.indexOf(_SWIPE_DIRECTION as Direction) === -1
+    )
+) {
     throw new ConfigInvalidException("swipe direction");
 }
 export const SWIPE_DIRECTION = _SWIPE_DIRECTION as Direction;
 
 // unlock password
-if (typeof _UNLOCK_PWD !== "string" || !(/^\d+$/.test(_UNLOCK_PWD))) {
+if (
+    MODE === RunMode.auto &&
+    (
+        typeof _UNLOCK_PWD !== "string" ||
+        !(/^\d*$/.test(_UNLOCK_PWD))
+    )
+) {
     throw new ConfigInvalidException("unlock password", "currently, only digits password are supported");
 }
 export const UNLOCK_PWD = _UNLOCK_PWD as string | undefined;
 
 // class name
-if (_CLASS_NAME === "") {
+if (
+    MODE === RunMode.auto &&
+    (
+        typeof _CLASS_NAME !== "string" ||
+        _CLASS_NAME === ""
+    )
+) {
     throw new ConfigInvalidException("Class name", "it can not be empty");
 }
 export const CLASS_NAME = _CLASS_NAME.split(';') as string[];
