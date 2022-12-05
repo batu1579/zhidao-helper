@@ -2,7 +2,7 @@
  * @Author: BATU1579
  * @CreateDate: 2022-05-24 16:58:03
  * @LastEditor: BATU1579
- * @LastTime: 2022-12-04 03:25:55
+ * @LastTime: 2022-12-05 23:20:19
  * @FilePath: \\src\\index.ts
  * @Description: 脚本入口
  */
@@ -10,7 +10,6 @@ import {
     MODE,
     RunMode,
     CLASS_NAME,
-    LONG_WAIT_MS,
     STUDY_TIME_MS,
     LISTENER_INTERVAL,
 } from "./global";
@@ -21,8 +20,8 @@ import { unlock } from "./lib/unlock";
 import { PermissionException } from "./lib/exception";
 
 import {
-    answerQuestion,
-    autoWatchCourse
+    autoWatchCourse,
+    manualWatchCourse
 } from "./lib/classOperation";
 
 init();
@@ -69,11 +68,7 @@ if (MODE === RunMode.auto) {
     Record.info("The scheduled task has been completed");
 } else if (MODE === RunMode.manual) {
     // manual mode
-    while (true) {
-        packageName("com.able.wisdomtree").waitFor();
-        answerQuestion();
-        sleep(LONG_WAIT_MS);
-    }
+    manualWatchCourse(STUDY_TIME_MS);
 }
 
 threads.shutDownAll();

@@ -66,12 +66,30 @@ export function autoWatchCourse(courseName: string, studyTime: number): void {
 
     // 开始学习
     Record.info(`start studying "${realClassName}" course`);
-    startStudyByTime(studyTime);
+    autoStudyByTime(studyTime);
 
     // 退出课程
     back();
     text("确定").findOne().click();
     Record.info(`stop studying ${realClassName} course`);
+}
+
+export function manualWatchCourse(studyTime: number): void {
+    if (studyTime <= 0) {
+        // 无限时常
+        Record.warn(
+            "Script will not stop automatically, " +
+            "please remember to go to the console to stop the script"
+        );
+        while (true) {
+            packageName("com.able.wisdomtree").waitFor();
+            answerQuestion();
+            sleep(LONG_WAIT_MS);
+        }
+    } else {
+        // 指定时常
+        studyByTime(studyTime);
+    }
 }
 
 function fillCourseQuestionnaire() {
@@ -126,7 +144,7 @@ function getQuestionList(): UiCollection {
  * @description: 学习任意课程
  * @param {number} studyTime 要学习的毫秒数
  */
-export function startStudyByTime(studyTime: number): void {
+export function autoStudyByTime(studyTime: number): void {
     // 点击继续学习
     id("com.able.wisdomtree:id/continue_study_btn")
         .findOne()
@@ -144,8 +162,15 @@ export function startStudyByTime(studyTime: number): void {
     // 取消全屏
     back();
 
+    // 开始学习
+    studyByTime(studyTime);
+}
+
+function studyByTime(studyTime: number) {
     let startTime = Date.now();
     let endTime = startTime + studyTime;
+
+    Record.log(`The script will automatically stop after ${studyTime / 1000 / 60} min`);
 
     while (Date.now() < endTime) {
         answerQuestion();

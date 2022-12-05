@@ -13,8 +13,9 @@
     {
         "name": "_STUDY_TIME_MIN",
         "type": "text",
-        "label": "自动学习时长",
-        "help": "每节课要学习的时长（分钟），如果不为自动模式则忽略。"
+        "label": "学习时长",
+        "validation": "required",
+        "help": "每节课要学习的时长（分钟），自动模式下需要大于零，手动模式下下雨等于零表示不自动终止学习。"
     },
     {
         "name": "_SWIPE_DIRECTION",
