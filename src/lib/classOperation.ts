@@ -174,6 +174,7 @@ function studyByTime(studyTime: number) {
 
     while (Date.now() < endTime) {
         answerQuestion();
+        sleep(LONG_WAIT_MS);
     }
     Record.debug("end course loop");
 
