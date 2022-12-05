@@ -30,7 +30,7 @@ export function unlock() {
 
     sleep(LONG_WAIT_MS * 3);
 
-    if (UNLOCK_PWD !== undefined) {
+    if (UNLOCK_PWD !== undefined || UNLOCK_PWD !== "") {
         for (let num of UNLOCK_PWD as string) {
             click(num);
         }
