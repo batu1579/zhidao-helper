@@ -67,6 +67,8 @@ events.on("exit", () => {
 
         Record.error("Failure to send logs !");
     }
+
+    hamibot.exit();
 });
 
 // ------------------------ validation --------------------------
