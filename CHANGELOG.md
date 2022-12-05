@@ -7,6 +7,8 @@
 
 ## [Unreleased]
 
+## [1.2.0] - 2022-12-06
+
 ### Added
 
 - 添加手动模式定时关闭脚本的功能：
@@ -71,7 +73,8 @@
 
 <!-- Versions -->
 
-[unreleased]: https://github.com/batu1579/zhidao-helper/compare/v1.1.0...HEAD
+[unreleased]: https://github.com/batu1579/zhidao-helper/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/batu1579/zhidao-helper/compare/v1.1.0..v1.2.0
 [1.1.0]: https://github.com/batu1579/zhidao-helper/compare/v1.0.0..v1.1.0
 [1.0.0]: https://github.com/batu1579/zhidao-helper/compare/v0.0.1..v1.0.0
 [0.0.1]: https://github.com/batu1579/zhidao-helper/releases/tag/v0.0.1
