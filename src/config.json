@@ -27,25 +27,25 @@
             "toRight": "向右滑动"
         },
         "validation": "required",
-        "help": "用来在亮屏以后解锁手机"
+        "help": "用来调整在亮屏以后解锁手机的滑动方向。"
     },
     {
         "name": "_UNLOCK_PWD",
         "type": "text",
         "label": "锁屏密码",
-        "help": "目前只支持输入数字密码，无密码则留空"
+        "help": "目前只支持输入数字密码，即使用系统自带的数字小键盘的密码，而不是纯数字的复杂密码。无密码则留空。"
     },
     {
         "name": "_CLASS_NAME",
         "type": "text",
         "label": "要观看的课程名称（使用英文分号分隔）",
-        "help": "可以只填写部分名称，但是可能会导致找不到课程"
+        "help": "可以只填写部分名称，但是可能会导致找不到课程。"
     },
     {
         "name": "_TOKEN",
         "type": "text",
         "label": "pushplus 的用户 Token",
-        "help": "可以在 pushplus 的微信公众号中获取，不使用 pushplus 则留空"
+        "help": "用于发送运行日志到微信。可以在 pushplus 的微信公众号中获取，不使用 pushplus 则留空。"
     },
     {
         "label": "显示控制台(需要悬浮窗权限)",
