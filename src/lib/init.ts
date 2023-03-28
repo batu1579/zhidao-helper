@@ -2,7 +2,7 @@
  * @Author: BATU1579
  * @CreateDate: 2022-02-04 20:58:39
  * @LastEditor: BATU1579
- * @LastTime: 2022-12-02 19:14:02
+ * @LastTime: 2022-11-28 11:16:01
  * @FilePath: \\src\\lib\\init.ts
  * @Description: 脚本初始化
  */
@@ -35,7 +35,7 @@ export function init() {
     if (SHOW_CONSOLE === "true") {
         console.show();
         sleep(SHORT_WAIT_MS);
-        console.setPosition(0, 50);
+        console.setPosition(0, 100);
         console.setSize(device.width, device.height / 4);
     }
 

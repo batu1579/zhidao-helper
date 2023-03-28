@@ -2,7 +2,7 @@
  * @Author: BATU1579
  * @CreateDate: 2022-02-04 16:09:50
  * @LastEditor: BATU1579
- * @LastTime: 2022-12-03 02:07:44
+ * @LastTime: 2023-03-28 19:08:12
  * @FilePath: \\src\\lib\\exception.ts
  * @Description: 全局异常类
  */
@@ -10,13 +10,23 @@ import {
     Record,
     getStackTrace,
     TraceCollectionType,
-    TraceStackFrameType
+    TraceStackFrameType,
+    LoggerSchemes
 } from "./logger";
 
 const ERROR_EVENTS = events.emitter();
 
-ERROR_EVENTS.on("ERROR", function errorListener(err: Exception) {
-    Record.noPrintError(err.toString());
+ERROR_EVENTS.on("error", function errorListener(err: Exception) {
+    // 防止重复输出异常信息
+    Record.customLog(
+        LoggerSchemes.error,
+        {
+            needPrint: false,
+            needRecord: true,
+            skipCallerNumber: 2
+        },
+        err.toString()
+    );
 })
 
 export interface Exception {
@@ -46,7 +56,7 @@ export class BaseException extends Error implements Exception {
         }
         this.traceBack = trace.toString(this.traceFormatter);
 
-        ERROR_EVENTS.emit("ERROR", this);
+        ERROR_EVENTS.emit("error", this);
     }
 
     public traceFilter = undefined;
@@ -70,6 +80,10 @@ function __isExceptionType<T extends BaseException>(error: any, targetException:
     }
 
     return exceptionType.value === targetException;
+}
+
+export function isBaseException(error: any): error is BaseException {
+    return __isExceptionType<BaseException>(error, "BaseException");
 }
 
 export class PermissionException extends BaseException {
