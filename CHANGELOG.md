@@ -7,6 +7,10 @@
 
 ## [Unreleased]
 
+## ### Added
+
+- 添加对于多选题的支持 [#4](https://github.com/batu1579/zhidao-helper/issues/4)
+
 ## [1.2.0] - 2022-12-06
 
 ### Added
