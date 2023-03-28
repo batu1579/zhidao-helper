@@ -1,5 +1,5 @@
 import { Record } from "./logger";
-import { LONG_WAIT_MS } from "../global";
+import { LONG_WAIT_MS, SHORT_WAIT_MS } from "../global";
 import { ValueException } from "./exception";
 import { simulatedClick } from "./simulateOperation";
 
@@ -209,7 +209,8 @@ function __answerQuestion(): void {
             break;
 
         case "多选题":
-        // TODO(batu1579): 补充对于多选题的支持
+            answerMutipleChoiceQuestion();
+            break;
 
         default:
             throw new ValueException(`Question type "${questionType}" not supported`);
@@ -240,6 +241,38 @@ function answerSingleChoiceQuestion(): void {
 
     // 选择正确答案
     simulatedClick(choiceList[correctAnswer.charCodeAt(0) - 65]);
+}
+
+function clickChoice(choice: number, choiceWidgets: UiCollection): void {
+    for (let i = 0; i < choiceWidgets.length; i++) {
+        if ((choice >> i) & 1) {
+            simulatedClick(choiceWidgets[i]);
+            sleep(random(0, SHORT_WAIT_MS));
+        }
+    }
+}
+
+function answerMutipleChoiceQuestion(): void {
+    let choiceWidgets = className("android.widget.ListView")
+        .findOne()
+        .children();
+    let maxConditionsNumber = Math.pow(2, choiceWidgets.length);
+
+    for (let i = 0; i < maxConditionsNumber; i++) {
+        let condition = i + 1;
+        Record.debug(`尝试多选情况：${condition}`)
+        // 选择答案
+        clickChoice(condition, choiceWidgets);
+
+        if (textContains("正确答案").exists()) {
+            return;
+        }
+
+        // 取消选择答案
+        clickChoice(condition, choiceWidgets);
+    }
+
+    throw new ValueException("Correct answer not found");
 }
 
 const SPEEDS = ["1.0x", "1.25x", "1.5x"] as const;
