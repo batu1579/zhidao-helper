@@ -2,7 +2,7 @@
  * @Author: BATU1579
  * @CreateDate: 2022-05-24 16:58:03
  * @LastEditor: BATU1579
- * @LastTime: 2022-12-05 23:20:19
+ * @LastTime: 2023-03-28 13:56:53
  * @FilePath: \\src\\index.ts
  * @Description: 脚本入口
  */
@@ -70,9 +70,6 @@ if (MODE === RunMode.auto) {
     // manual mode
     manualWatchCourse(STUDY_TIME_MS);
 }
-
-threads.shutDownAll();
-exit();
 
 function changeSettings() {
     try {
